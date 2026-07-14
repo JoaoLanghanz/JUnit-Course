@@ -1,6 +1,5 @@
 import com.langhanz.Calculadora;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +7,26 @@ import java.util.List;
 public class CalculadoraTest {
 
     private Calculadora calc = new Calculadora();
+
+    @BeforeEach
+    public void setup(){
+        System.out.println("^^^");
+    }
+
+    @AfterEach
+    public void teardown(){
+        System.out.println("vvv");
+    }
+
+    @BeforeAll
+    public static void setupAll(){
+        System.out.println("--- Before All ---");
+    }
+
+    @AfterAll
+    public static void teardownAll(){
+        System.out.println("--- After All ---");
+    }
 
     @Test
     public void testSomar(){
