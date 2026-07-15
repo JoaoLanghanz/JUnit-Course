@@ -1,5 +1,8 @@
 import com.langhanz.Calculadora;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,5 +105,24 @@ public class CalculadoraTest {
             float resultado = 10 / 0;
         });
         Assertions.assertEquals("/ by zero", exception.getMessage());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"teste1", "teste2", "teste3"})
+    public void testStrings(String param){
+        System.out.println(param);
+        Assertions.assertNotNull(param);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+            "6,2,3",
+            "6,-2,-3",
+            "10,3, 3.3333332538604736",
+            "0,2,0"
+    })
+    public void deveDividirCorretamente(int num, int den, double res){
+        float resultado = calc.dividir(num, den);
+        Assertions.assertEquals(res, resultado);
     }
 }
