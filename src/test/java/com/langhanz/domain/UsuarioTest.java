@@ -33,4 +33,22 @@ public class UsuarioTest {
         );
         assertEquals("Nome é obrigatório.", ex.getMessage());
     }
+
+    @Test
+    @DisplayName("Deve rejeitar usuário com email nulo")
+    public void deveRejeitarUsuarioComEmailNulo(){
+        ValidationException ex = Assertions.assertThrows(ValidationException.class, () ->
+                UsuarioBuilder.umUsuario().comEmail(null).agora()
+        );
+        assertEquals("email é obrigatório.", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("Deve rejeitar usuário com senha nulo")
+    public void deveRejeitarUsuarioComSenhaNulo(){
+        ValidationException ex = Assertions.assertThrows(ValidationException.class, () ->
+                UsuarioBuilder.umUsuario().comSenha(null).agora()
+        );
+        assertEquals("senha é obrigatório.", ex.getMessage());
+    }
 }
