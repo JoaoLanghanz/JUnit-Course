@@ -1,5 +1,7 @@
 package com.langhanz.domain.builders;
 
+import com.langhanz.domain.Conta;
+
 import static java.lang.String.format;
 
 import java.lang.reflect.Field;
@@ -136,6 +138,6 @@ public class BuilderMaster {
 
     public static void main(String[] args) {
         BuilderMaster master = new BuilderMaster();
-        master.gerarCodigoClasse(null);
+        master.gerarCodigoClasse(Conta.class);
     }
 }
