@@ -1,5 +1,6 @@
 package com.langhanz.domain;
 
+import com.langhanz.domain.builders.UsuarioBuilder;
 import com.langhanz.domain.exception.ValidationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -13,13 +14,14 @@ public class UsuarioTest {
     @Test
     @DisplayName("Deve criar um usuário válido")
     public void deveCriarUsuarioValido(){
-        Usuario usr = new Usuario(1L, "Usuario valido", "user@email.com", "123456");
 
-        Assertions.assertAll(
+        Usuario usr = UsuarioBuilder.umUsuario().agora();
+
+        Assertions.assertAll("Usuário",
             () -> assertEquals(1L, usr.getId()),
-            () -> assertEquals("Usuario valido", usr.getNome()),
-            () -> assertEquals("user@email.com", usr.getEmail()),
-            () -> assertEquals("123456", usr.getSenha())
+            () -> assertEquals("Usuário válido", usr.getNome()),
+            () -> assertEquals("email@email.com", usr.getEmail()),
+            () -> assertEquals("123123", usr.getSenha())
         );
     }
 
@@ -27,7 +29,7 @@ public class UsuarioTest {
     @DisplayName("Deve rejeitar usuário com nome nulo")
     public void deveRejeitarUsuarioComNomeNulo(){
         ValidationException ex = Assertions.assertThrows(ValidationException.class, () ->
-                new Usuario(1L, null, "email@email.com", "123123")
+                UsuarioBuilder.umUsuario().comNome(null).agora()
         );
         assertEquals("Nome é obrigatório.", ex.getMessage());
     }
