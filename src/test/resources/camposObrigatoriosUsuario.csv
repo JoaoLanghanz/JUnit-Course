@@ -1,0 +1,4 @@
+id,nome,email,senha,mensagem
+1, NULL,email@email.com,123123,Nome é obrigatório.
+1,joao,NULL,123123,email é obrigatório.
+1,joao,email@email,NULL,senha é obrigatório.
