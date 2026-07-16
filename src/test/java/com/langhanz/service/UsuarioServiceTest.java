@@ -2,6 +2,7 @@ package com.langhanz.service;
 
 import com.langhanz.domain.Usuario;
 import com.langhanz.domain.builders.UsuarioBuilder;
+import com.langhanz.domain.exception.ValidationException;
 import com.langhanz.infra.UsuarioDammyRepository;
 import com.langhanz.service.repositories.UsuarioRepository;
 import org.junit.jupiter.api.*;
@@ -82,6 +83,22 @@ public class UsuarioServiceTest {
 //         Mockito.verify(repository).getUserByEmail(userToSave.getEmail());
 //         Mockito.verify(repository).salvar(userToSave); // Não é necessario pois o assert já garante isso
 
+
+    }
+
+    @Test
+    public void deveRejeitarUsuarioExistente(){
+        Usuario userToSave = UsuarioBuilder.umUsuario().comId(null).agora();
+
+        Mockito.when(repository.getUserByEmail(userToSave.getEmail()))
+                .thenReturn(Optional.of(UsuarioBuilder.umUsuario().agora()));
+
+        ValidationException ex = Assertions.assertThrows(ValidationException.class, () ->
+                service.salvar(userToSave));
+
+        Assertions.assertTrue(ex.getMessage().endsWith("já cadastrado!"));
+
+        Mockito.verify(repository, Mockito.never()).salvar(userToSave);
 
     }
 
