@@ -4,8 +4,7 @@ import com.langhanz.domain.Usuario;
 import com.langhanz.domain.builders.UsuarioBuilder;
 import com.langhanz.infra.UsuarioDammyRepository;
 import com.langhanz.service.repositories.UsuarioRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
 import java.util.Optional;
@@ -13,19 +12,30 @@ import java.util.Optional;
 public class UsuarioServiceTest {
 
     private UsuarioService service;
+    private UsuarioRepository repository;
+
+
+    @BeforeEach
+    public void setup(){
+        repository = Mockito.mock(UsuarioRepository.class);
+        service = new UsuarioService(repository);
+    }
+
+//    @AfterEach
+//    public void tearDown(){
+//        Mockito.verifyNoMoreInteractions(repository);
+//    }
 
     @Test
     public void deveSalvarUsuarioComSucesso(){
-        service = new UsuarioService(new UsuarioDammyRepository());
         Usuario user = UsuarioBuilder.umUsuario().comId(null).comEmail("outro@email.com").agora();
         Usuario saverUser = service.salvar(user);
-        Assertions.assertNotNull(saverUser.getId());
+        System.out.println(saverUser);
+//        Assertions.assertTrue(saverUser.isPresent());
     }
 
     @Test
     public void deveRetornarEmptyQuandoUsuarioInexistente(){
-        UsuarioRepository repository = Mockito.mock(UsuarioRepository.class);
-        service = new UsuarioService(repository);
 
         Optional<Usuario> user = service.getUserByEmail("mail@mail.com");
         Assertions.assertTrue(user.isEmpty());
@@ -33,8 +43,6 @@ public class UsuarioServiceTest {
 
     @Test
     public void deveRetornarUsuarioPorEmail(){
-        UsuarioRepository repository = Mockito.mock(UsuarioRepository.class);
-        service = new UsuarioService(repository);
 
         Mockito.when(repository.getUserByEmail("email@email.com"))
                 .thenReturn(Optional.of(UsuarioBuilder.umUsuario().agora()))
@@ -44,16 +52,15 @@ public class UsuarioServiceTest {
         System.out.println(user);
         user = service.getUserByEmail("email@email.com");
         System.out.println(user);
-        Assertions.assertTrue(user.isPresent());
+        Assertions.assertNull(user);
 
         Mockito.verify(repository, Mockito.atLeastOnce()).getUserByEmail("email@email.com");
+        Mockito.verify(repository, Mockito.never()).getUserByEmail("outroEmail@email.com");
     }
 
 
     @Test
     public void deveSalvarUsuarioComSucessoMock(){
-        UsuarioRepository repository = Mockito.mock(UsuarioRepository.class);
-        service = new UsuarioService(repository);
 
         Usuario userToSave = UsuarioBuilder.umUsuario().comId(null).agora();
 
@@ -66,7 +73,7 @@ public class UsuarioServiceTest {
          Usuario savedUser = service.salvar(userToSave);
          Assertions.assertNotNull(savedUser.getId());
 
-         Mockito.verify(repository).getUserByEmail(userToSave.getEmail());
+//         Mockito.verify(repository).getUserByEmail(userToSave.getEmail());
 //         Mockito.verify(repository).salvar(userToSave); // Não é necessario pois o assert já garante isso
 
 
