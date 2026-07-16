@@ -5,20 +5,23 @@ import com.langhanz.domain.builders.UsuarioBuilder;
 import com.langhanz.infra.UsuarioDammyRepository;
 import com.langhanz.service.repositories.UsuarioRepository;
 import org.junit.jupiter.api.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
 public class UsuarioServiceTest {
 
-    private UsuarioService service;
-    private UsuarioRepository repository;
+    @Mock private UsuarioRepository repository;
+    @InjectMocks private UsuarioService service;
+
 
 
     @BeforeEach
     public void setup(){
-        repository = Mockito.mock(UsuarioRepository.class);
-        service = new UsuarioService(repository);
+        MockitoAnnotations.openMocks(this);
     }
 
 //    @AfterEach
