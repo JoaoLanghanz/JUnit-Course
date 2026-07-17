@@ -98,7 +98,7 @@ public class UsuarioServiceTest {
 
         Assertions.assertTrue(ex.getMessage().endsWith("já cadastrado!"));
 
-        Mockito.verify(repository, Mockito.never()).salvar(userToSave);
+        Mockito.verify(repository, Mockito.never()).salvar(userToSave); // Garante que o salvar do repository nunca foi chamado.
 
     }
 
