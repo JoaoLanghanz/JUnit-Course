@@ -9,9 +9,7 @@ import com.langhanz.service.repositories.ContaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -103,6 +101,26 @@ public class ContaServiceTest {
         Assertions.assertNotNull(savedConta.getId());
 
         Mockito.verify(repository).salvar(Mockito.any());
+
+    }
+
+    @Captor private ArgumentCaptor<Conta> contaCaptor;
+
+    @Test
+    public void deveSalvarPrimeiraContaComSucesso_ArgumentCaptor() throws Exception{
+
+        Conta contaToSave = ContaBuilder.umaConta().comId(null).agora();
+        Mockito.doNothing().when(event).dispatch(ContaBuilder.umaConta().agora(), ContaEvent.EventType.CREATED);
+
+        Mockito.when(repository.salvar(Mockito.any(Conta.class)))
+                .thenReturn(ContaBuilder.umaConta().agora());
+
+        Conta savedConta = service.salvar(contaToSave);
+        Assertions.assertNotNull(savedConta.getId());
+
+        Mockito.verify(repository).salvar(contaCaptor.capture());
+        Assertions.assertNull(contaCaptor.getValue().getId());
+        Assertions.assertTrue(contaCaptor.getValue().getNome().endsWith("lida"));
 
     }
 
