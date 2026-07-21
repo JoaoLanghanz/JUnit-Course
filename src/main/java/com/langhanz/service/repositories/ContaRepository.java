@@ -8,7 +8,9 @@ import java.util.Optional;
 
 public interface ContaRepository {
 
-    public Conta salvar(Conta c);
+    Conta salvar(Conta c) throws Exception;
 
     List<Conta> obterCotnasPorUsuario(Long usuarioId);
+
+    void delete(Conta conta);
 }

@@ -2,6 +2,8 @@ package com.langhanz.domain;
 
 import com.langhanz.domain.exception.ValidationException;
 
+import java.util.Objects;
+
 public class Conta {
 
     private Long id;
@@ -28,5 +30,17 @@ public class Conta {
 
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Conta conta = (Conta) o;
+        return Objects.equals(id, conta.id) && Objects.equals(nome, conta.nome) && Objects.equals(usuario, conta.usuario);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, usuario);
     }
 }
