@@ -90,4 +90,21 @@ public class ContaServiceTest {
     }
 
 
+    @Test
+    public void deveSalvarPrimeiraContaComSucesso_QualquerConta() throws Exception{
+
+        Conta contaToSave = ContaBuilder.umaConta().comId(null).agora();
+        Mockito.doNothing().when(event).dispatch(ContaBuilder.umaConta().agora(), ContaEvent.EventType.CREATED);
+
+        Mockito.when(repository.salvar(Mockito.any(Conta.class)))
+                .thenReturn(ContaBuilder.umaConta().agora());
+
+        Conta savedConta = service.salvar(contaToSave);
+        Assertions.assertNotNull(savedConta.getId());
+
+        Mockito.verify(repository).salvar(Mockito.any());
+
+    }
+
+
 }
